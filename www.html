@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEDOO NET - شحن رصيد فودافون</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            color: white;
+            overflow: hidden;
+            background: #0a0a0a;
+        }
+
+        /* خلفية ثلاثية الأبعاد */
+        .scene-container {
+            width: 100%;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+        }
+ /* قطرات المطر */
+ .rain-container {
+            position: fixed;
+            top: 100px;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            pointer-events: none;
+        }
+
+        .rain-drop {
+            position: absolute;
+            width: 2px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.6);
+            opacity: 0.7;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+        /* تحسين نموذج الإدخال */
+        .form-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+            text-align: center;
+            color: #ffdd57;
+        }
+
+        .form-container label {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            text-align: right;
+            width: 100%;
+            color: #fff;
+        }
+
+        .form-container input {
+            margin-bottom: 15px;
+            padding: 12px;
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid #ffdd57;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 1rem;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .form-container input:focus {
+            border-color: #ff3366;
+            outline: none;
+            transform: scale(1.05);
+        }
+
+        .form-container button {
+            padding: 12px 20px;
+            background: linear-gradient(45deg, #ff512f, #dd2476);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease, background 0.3s ease;
+            width: 100%;
+        }
+
+        .form-container button:hover {
+            transform: scale(1.1);
+            background: linear-gradient(45deg, #dd2476, #ff512f);
+        }
+
+        /* رسالة التأكيد */
+        .message {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #28a745;
+            color: white;
+            border-radius: 10px;
+            display: none;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="scene-container">
+        <canvas id="webgl"></canvas>
+    </div>
+ <!-- تأثير المطر -->
+ <div class="rain-container"></div>
+
+    <div class="form-container">
+        <h1>شحن رصيد فودافون</h1>
+
+        <label for="balance">🔢 كمية الرصيد المطلوبة</label>
+        <input type="number" id="balance" placeholder="أدخل المبلغ" min="100">
+
+        <label for="fromNumber">📱 رقم الذي حولت منه</label>
+        <input type="tel" id="fromNumber" placeholder="أدخل رقم المرسل">
+
+        <label for="toNumber">📲 رقم الذي تريد الشحن إليه</label>
+        <input type="tel" id="toNumber" placeholder="أدخل رقم المستلم">
+
+        <label for="screenshot">📸 رفع صورة التحويل</label>
+        <input type="file" id="screenshot" accept="image/*">
+
+        <button id="submit">📤 شحن</button>
+
+        <div class="message" id="confirmationMessage">
+            ✅ تم إرسال طلب الشحن بنجاح! سيتم تأكيد الرصيد خلال 15 دقيقة.
+        </div>
+    </div>
+
+  <script>
+    document.getElementById('submit').addEventListener('click', async () => {
+        const balance = document.getElementById('balance').value;
+        const fromNumber = document.getElementById('fromNumber').value;
+        const toNumber = document.getElementById('toNumber').value;
+        const screenshot = document.getElementById('screenshot').files[0];
+
+        if (!balance || !fromNumber || !toNumber || !screenshot) {
+            alert('⚠️ الرجاء تعبئة كافة البيانات!');
+            return;
+        }
+
+        const telegramBotToken = "7916799067:AAHFnY6z26-uAOKOwSaG43OPgBo-EEdZ6OE"; // 🔹 ضع هنا التوكن الخاص بالبوت
+        const chatId = "6798744902"; // 🔹 ضع هنا الـ Chat ID الخاص بك
+
+        // 🟢 1. إرسال البيانات النصية إلى تيليجرام
+        const textMessage = `📌 *طلب شحن جديد*\n\n💰 *المبلغ:* ${balance} جنيه\n📲 *الرقم الي حول منه:* ${fromNumber}\n📞 *الرقم الي عاوز عليه الرصيد:* ${toNumber}`;
+        
+        try {
+            await fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: textMessage,
+                    parse_mode: "Markdown"
+                })
+            });
+
+            // 🟢 2. إرسال صورة التحويل
+            const formData = new FormData();
+            formData.append("chat_id", chatId);
+            formData.append("photo", screenshot);
+
+            const photoResponse = await fetch(`https://api.telegram.org/bot${telegramBotToken}/sendPhoto`, {
+                method: "POST",
+                body: formData
+            });
+
+            if (!photoResponse.ok) throw new Error("فشل إرسال الصورة!");
+
+            // ✅ إظهار رسالة التأكيد بعد نجاح الإرسال
+            document.getElementById('confirmationMessage').style.display = 'block';
+        } catch (error) {
+            alert("❌ حدث خطأ أثناء الإرسال، الرجاء المحاولة مرة أخرى!");
+            console.error(error);
+        }
+    });
+    function createRain() {
+            const rainContainer = document.querySelector('.rain-container');
+            for (let i = 0; i < 50; i++) {
+                let drop = document.createElement('div');
+                drop.classList.add('rain-drop');
+                drop.style.left = `${Math.random() * 100}%`;
+                drop.style.animationDuration = `${Math.random() * 2 + 1}s`;
+                drop.style.animationDelay = `${Math.random() * 2}s`;
+                rainContainer.appendChild(drop);
+            }
+        }
+        createRain();
+</script>
+
+</body>
+</html>

