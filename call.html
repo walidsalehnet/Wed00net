@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ملف البروفايل الاحترافي</title>
+    <style>
+        /* إعدادات الصفحة الأساسية */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #4c4b63, #2d2c45);
+            color: #fff;
+        }
+ /* قطرات المطر */
+ .rain-container {
+            position: fixed;
+            top: 100px;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            pointer-events: none;
+        }
+
+        .rain-drop {
+            position: absolute;
+            width: 2px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.6);
+            opacity: 0.7;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+
+        .profile-container {
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .profile-container img {
+            width: 370px;
+            height: 370px;
+            border-radius: 100%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid #fff;
+        }
+
+        .profile-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #f0f0f0;
+        }
+
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #fff;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .social-link:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .social-link img {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+ <!-- تأثير المطر -->
+ <div class="rain-container"></div>
+
+<div class="profile-container">
+    <img src="https://k.top4top.io/p_3327oc25e1.jpg" alt="صورة البروفايل">
+    <div class="profile-name">  وليد ابو صالح </div>
+    <div class="social-links">
+        <a href="https://www.facebook.com/profile.php?id=61565966200847" target="_blank" class="social-link">
+            <img src="https://i.top4top.io/p_3235722ds0.png" alt="Facebook Icon">
+            فيسبوك
+        </a>
+    </a>
+    <a href="https://wsend.co/201097891442" target="_blank" class="social-link">
+        <img src="https://c.top4top.io/p_33288vgbh2.jpg" alt="Twitter Icon">
+        واتساب 
+    </a>
+        <a href="https://www.tiktok.com/@walidabosaleeh?_t=ZS-8tlpzzf9A63&_r=1" target="_blank" class="social-link">
+            <img src="https://h.top4top.io/p_3235no83l1.png" alt="Twitter Icon">
+            تيك توك
+        </a>
+        <a href="https://www.instagram.com/walidsaleh353?igsh=MXVvYmZoZXhxNWhwaQ==" target="_blank" class="social-link">
+            <img src="https://i.top4top.io/p_3235b3y4w2.png" alt="Instagram Icon">
+            انستجرام
+        </a>
+        <a href="https://t.me/abosalehphone" target="_blank" class="social-link">
+            <img src="https://b.top4top.io/p_3328zxy7w1.png" alt="LinkedIn Icon">
+            تليجرام
+                  
+        </a>
+    </div>
+</div>
+<script>
+function createRain() {
+    const rainContainer = document.querySelector('.rain-container');
+    for (let i = 0; i < 50; i++) {
+        let drop = document.createElement('div');
+        drop.classList.add('rain-drop');
+        drop.style.left = `${Math.random() * 100}%`;
+        drop.style.animationDuration = `${Math.random() * 2 + 1}s`;
+        drop.style.animationDelay = `${Math.random() * 2}s`;
+        rainContainer.appendChild(drop);
+    }
+}
+createRain();
+</script>
+</body>
+</html>
