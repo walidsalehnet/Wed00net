@@ -35,8 +35,9 @@
             width: 100%;
             height: 100%;
         }
- /* قطرات المطر */
- .rain-container {
+
+        /* قطرات المطر */
+        .rain-container {
             position: fixed;
             top: 100px;
             left: 0;
@@ -54,10 +55,17 @@
             animation: fall linear infinite;
         }
 
+        @media (max-width: 600px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
         @keyframes fall {
             0% { transform: translateY(0); opacity: 1; }
             100% { transform: translateY(100vh); opacity: 0; }
         }
+
         /* تصميم الموقع */
         body {
             font-family: Arial, sans-serif;
@@ -81,7 +89,7 @@
             margin: 50px auto;
             max-width: 600px;
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(2, 1fr); /* تعديل هنا ليكون عمودين */
             gap: 20px;
             position: relative;
             z-index: 1;
@@ -137,8 +145,8 @@
     <div class="scene-container">
         <canvas id="webgl"></canvas>
     </div>
- <!-- تأثير المطر -->
- <div class="rain-container"></div>
+    <!-- تأثير المطر -->
+    <div class="rain-container"></div>
 
     <header>
         Wedoo Net
@@ -147,35 +155,36 @@
     <div class="container">
         <button class="button vodafone" onclick="location.href='rased.html'">
             <img src="https://e.top4top.io/p_3255bena16.png" alt="Vodafone">
-            <span>شحن رصيد صافي </span>
+            <span>شحن رصيد صافي</span>
         </button>
         <button class="button orange" onclick="location.href='offer.html'">
             <img src="https://e.top4top.io/p_3255bena16.png" alt="Orange">
             <span>خصم فلكس 260</span>
         </button>
-        </button>
         <button class="button buy-lines" onclick="location.href='13.html'">
             <img src="https://e.top4top.io/p_3255bena16.png" alt="Buy Lines">
-            <span> 13 الف فليكس</span>
+            <span>13 الف فليكس</span>
         </button>
         <button class="button buy-liness" onclick="location.href='50.html'">
             <img src="https://e.top4top.io/p_3255bena16.png" alt="Used Phones">
-            <span> تجديد 50 الف فليكس</span>
+            <span>تجديد 50 الف فليكس</span>
         </button>
         <button class="button etisalat" onclick="location.href='29.html'">
             <img src="https://e.top4top.io/p_3255bena16.png" alt="Etisalat">
-            <span>  29 الف ميجا بيزنس   </span>
+            <span>29 الف ميجا بيزنس</span>
         </button>
         <button class="button we" onclick="location.href='bs.html'">
             <img src="https://e.top4top.io/p_3255bena16.png" alt="We">
-            <span> 40 الف ميجا بيزنس  </span>
+            <span>45 الف ميجا بيزنس</span>
+        </button>
         <button class="button we" onclick="location.href='card.html'">
             <img src="https://c.top4top.io/p_33239ljbo1.jpg" alt="We">
-            <span>كروت رمضان </span>
+            <span>كروت رمضان</span>
         </button>
         <button class="button we" onclick="location.href='call.html'">
-            <img src="https://c.top4top.io/p_33239ljbo1.jpg" alt="We">
-            <span>للتواصل   </span>
+            <img src="https://e.top4top.io/p_3328btpub1.png" alt="We">
+            <span>للتواصل</span>
+        </button>
     </div>
 
     <div class="footer">
@@ -229,6 +238,7 @@
         });
 
         animate();
+
         function createRain() {
             const rainContainer = document.querySelector('.rain-container');
             for (let i = 0; i < 50; i++) {
