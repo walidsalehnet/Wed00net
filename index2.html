@@ -55,12 +55,6 @@
             animation: fall linear infinite;
         }
 
-        @media (max-width: 600px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
-        }
-
         @keyframes fall {
             0% { transform: translateY(0); opacity: 1; }
             100% { transform: translateY(100vh); opacity: 0; }
@@ -89,7 +83,7 @@
             margin: 50px auto;
             max-width: 600px;
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* تعديل هنا ليكون عمودين */
+            grid-template-columns: 1fr; /* جعل كل المستطيلات في سطر منفصل */
             gap: 20px;
             position: relative;
             z-index: 1;
