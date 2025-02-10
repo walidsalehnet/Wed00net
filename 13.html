@@ -30,7 +30,10 @@
             overflow: hidden;
             z-index: -1;
         }
-
+  @keyframes fall {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
         /* قطرات المطر */
         .rain-container {
             position: fixed;
