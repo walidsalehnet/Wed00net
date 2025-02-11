@@ -134,33 +134,6 @@
             z-index: 1;
         }
 
-        /* نافذة طلب فتح نسخة سطح المكتب */
-        .desktop-request-popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            color: white;
-            text-align: center;
-            z-index: 1000;
-        }
-
-        .desktop-request-popup button {
-            margin: 10px;
-            padding: 10px;
-            background-color: #ff6600;
-            border: none;
-            color: white;
-            cursor: pointer;
-        }
-
-        .desktop-request-popup button:hover {
-            background-color: #e65c00;
-        }
     </style>
 </head>
 <body>
@@ -217,13 +190,6 @@
     <!-- التذييل -->
     <div class="footer">
         جميع الحقوق محفوظة 2025 - وليد أبو صالح
-    </div>
-
-    <!-- نافذة منبثقة لطلب فتح نسخة سطح المكتب -->
-    <div class="desktop-request-popup" id="desktop-request-popup">
-        <p>هل ترغب في فتح الموقع في وضع سطح المكتب؟</p>
-        <button onclick="requestDesktopMode()">نعم</button>
-        <button onclick="closePopup()">لا</button>
     </div>
 
     <script type="module">
@@ -289,19 +255,6 @@
         }
         createRain();
 
-        // عرض نافذة طلب فتح نسخة سطح المكتب
-        if (window.innerWidth <= 768) {  // التحقق من الجهاز المحمول
-            document.getElementById('desktop-request-popup').style.display = 'block';
-        }
-
-        function requestDesktopMode() {
-            alert("للمتابعة، يرجى فتح الصفحة في وضع سطح المكتب");
-            window.location.href = window.location.href;  // إعادة تحميل الصفحة في وضع سطح المكتب
-        }
-
-        function closePopup() {
-            document.getElementById('desktop-request-popup').style.display = 'none';
-        }
     </script>
 
 </body>
